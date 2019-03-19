@@ -36,14 +36,14 @@
 				if($('span:visible').length){
 					$('span').hide();
 					$("select option").css({"background-color": "white"});
-					}
-				else{
-					$('span').show();     
-					$("select .wrong").css('background-color', 'red');
-					$("select .correct").css('background-color', 'green');
+					}else{
+						$('span').show();     
+						$("select .wrong").css('background-color', 'red');
+						$("select .correct").css('background-color', 'green');
+						
 					}
             });
-
+			
 			function loadQuestion(QIndex){
 				var question = qArray[QIndex].question ;
 				var answersArr = qArray[QIndex].answers ;
