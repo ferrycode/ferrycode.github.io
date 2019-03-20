@@ -15,7 +15,7 @@
 <script>
          $(document).ready(function() { 
 			var jsonURL = "https://ferrycode.github.io/PTE/READING/RWFIB/data.json";
-				var options = "";
+			var options = "";
 			var qArray ;
 			var userScoreMsg =""; 
 			
@@ -49,6 +49,7 @@
 				else{
 					var score = 0 ; 
 					var optionsCount = 0;
+					
 					$('#show_answer').text('HIDE ANSWERS');
 					$('.answer-hint').show();     
 					$("select .wrong").css('background-color', 'red');
@@ -60,8 +61,14 @@
 						
 						optionsCount++; 					
 					}); //end loop selects 
+					var smile = ":)";
+					var scorePcnt = Math.round(((score*10)/optionsCount));
 					
-					userScoreMsg = ' Your score = '+score+ ' out of '+ optionsCount ;
+					if(scorePcnt >= 5) {smile = ", Very Good  :)"; $("#answers").attr('class', 'alert alert-success'); }
+					else if (scorePcnt < 5 && scorePcnt > 0) {smile = ", Good but do better  :|"; $("#answers").attr('class', 'alert alert-warning');}
+					else {smile = ", Be ready next time  :("; $("#answers").attr('class', 'alert alert-danger');}
+					
+					userScoreMsg = ' Your score = '+score+ ' out of '+ optionsCount + ' in ' + $("#timer").text() + ' '+smile; 
 					$("#answers").html(userScoreMsg);
 					$("#answers").show();
 				}
@@ -102,6 +109,8 @@
 					$(this).after(answersSpans[index]);	//inject correct answer span 			
 				}); //end loop selects 
 				
+				//reset timer 
+				$('#timer').timer('remove');
 				$('#timer').timer();
 			
 			}
@@ -109,6 +118,7 @@
 			$('#samples').change(function () {
 				//alert(index);
 				var questionIndex = this.options[this.selectedIndex].index ;
+				
 				loadQuestion (questionIndex);
 				
 				$("#answers").html('');
@@ -173,7 +183,7 @@
 				<div class="col-sm-9">	
 				 <select id="samples" class="form-control"></select>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2 text-right">
 				  <button  id="next" type="button" class="btn btn-outline-dark">Next >></button>
 				</div>
 			  </div>	
@@ -181,12 +191,13 @@
 		</div>
 	  </div>
 	  <div class="row">
-		<div class="col-sm-8">
-			<br>
+		<div class="col-sm-10">
+			
 		</div>
-		<div class="col-sm-4">
-			<span class="" id="timer"><span>
+		<div class="col-sm-2 text-center border-left border-danger">
+			<h3 class="" id="timer"><h3>
 		</div>
+		<br>
 	  </div>
 	  <div class="row">
 		<div class="col-sm-12 border border-warning">
