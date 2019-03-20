@@ -16,6 +16,7 @@
 			var jsonURL = "https://ferrycode.github.io/PTE/READING/RWFIB/data.json";
 			var options = "";
 			var qArray ;
+			var userScoreMsg =""; 
 			
 			//Consruct the select  menu
 			$.getJSON(jsonURL, function (data) {
@@ -35,15 +36,36 @@
 				//$("span").show();   
 				if($('span:visible').length){
 					$('span').hide();
+					$("#answers").html('');
+					$("#answers").hide();
 					$("select option").css({"background-color": "white"});
-					}else{
-						$('span').show();     
-						$("select .wrong").css('background-color', 'red');
-						$("select .correct").css('background-color', 'green');
+					$('#show_answer').text('SHOW ANSWERS');
+					$("#question").find("select").each(function(index) {
+						$(this).css('background-color', 'transparent');
+						$(this).children("option").css('background-color', 'transparent');										
+					});
+				}
+				else{
+					var score = 0 ; 
+					var optionsCount = 0;
+					$('#show_answer').text('HIDE ANSWERS');
+					$('span').show();     
+					$("select .wrong").css('background-color', 'red');
+					$("select .correct").css('background-color', 'green');
+					 
+					$("#question").find("select").each(function(index) {
+						if ($(this).children("option:selected").val()==0) $(this).css('background-color', 'red');
+						else {$(this).css('background-color', 'green'); score++ ; }
 						
-					}
+						optionsCount++; 					
+					}); //end loop selects 
+					
+					userScoreMsg = ' Your score = '+score+ ' out of '+ optionsCount ;
+					$("#answers").html(userScoreMsg);
+					$("#answers").show();
+				}
             });
-			
+
 			function loadQuestion(QIndex){
 				var question = qArray[QIndex].question ;
 				var answersArr = qArray[QIndex].answers ;
@@ -73,7 +95,7 @@
 				
 				// inject HTML content 		
 				$("#question").html(question);	// inject the question, not yet option or correct answer spans 
-				$("#answers").html(answersUL);	//inject correct answers UL 			
+				//$("#answers").html(answersUL);	//inject correct answers UL 			
 				$("#question").find("select").each(function(index) {
 					$(this).html(optionsStrArr[index]); //inject options 
 					$(this).after(answersSpans[index]);	//inject correct answer span 			
@@ -86,13 +108,18 @@
 				var questionIndex = this.options[this.selectedIndex].index ;
 				loadQuestion (questionIndex);
 				
+				$("#answers").html('');
+				$("#answers").hide();
 			});            
          });
+		 /*class="collapse" data-toggle="collapse" href="#answersTab" role="button" aria-expanded="false" aria-controls="answersTab"*/
 </script>
 <style>
 	span {
 	  --display: none!important;
 	}
+	
+	#answers{display: none;}
 	
 	option .wrong={background-color:red!important; }
 	option .correct={background-color:green!important; }
@@ -111,10 +138,10 @@
 	  </div>
 	</form>
 	<div id="question"> </div>
-	<a id="show_answer" class="btn btn-success" data-toggle="collapse" href="#answersTab" role="button" aria-expanded="false" aria-controls="answersTab">
+	<a id="show_answer" class="btn btn-success" >
 		SHOW ANSWERS 
 	</a>
-	<div id="answersTab" class="collapse" >
+	<div id="answersTab"  >
 	  <div id="answers" class="alert alert-success"></div> 
 	</div>
 </body>
