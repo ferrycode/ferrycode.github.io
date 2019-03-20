@@ -14,7 +14,7 @@
 <script>
          $(document).ready(function() { 
 			var jsonURL = "https://ferrycode.github.io/PTE/READING/RWFIB/data.json";
-			var options = "";
+				var options = "";
 			var qArray ;
 			var userScoreMsg =""; 
 			
@@ -33,9 +33,9 @@
 			
 			// SHOW ANSWERS 
             $("#show_answer").click(function(event){
-				//$("span").show();   
-				if($('span:visible').length){
-					$('span').hide();
+				//$("answer-hint").show();   
+				if($('.answer-hint:visible').length){
+					$('.answer-hint').hide();
 					$("#answers").html('');
 					$("#answers").hide();
 					$("select option").css({"background-color": "white"});
@@ -49,7 +49,7 @@
 					var score = 0 ; 
 					var optionsCount = 0;
 					$('#show_answer').text('HIDE ANSWERS');
-					$('span').show();     
+					$('.answer-hint').show();     
 					$("select .wrong").css('background-color', 'red');
 					$("select .correct").css('background-color', 'green');
 					 
@@ -80,7 +80,7 @@
 					//generate answers ul 
 					answersUL += '<li class="list-group-item">' + answersArr[i] + '</li>';					
 					//generate answers spans 
-					answersSpans[i] = '<span class="badge badge-success" style="display:none;" >'+answersArr[i]+'</span>';
+					answersSpans[i] = '<span class="badge badge-success answer-hint" style="display:none;" >'+answersArr[i]+'</span>';
 				}
 				answersUL = ' <ul class="list-group list-group-horizontal">' + answersUL + '</ul>';
 				
@@ -110,14 +110,34 @@
 				
 				$("#answers").html('');
 				$("#answers").hide();
-			});            
+			});
+
+			$("#next").click(function() {
+			  var nextElement = $('#samples > option:selected').next('option');
+			  if (nextElement.length > 0) {
+				$('#samples > option:selected').removeAttr('selected').next('option').attr('selected', 'selected');
+				$('#samples').trigger('change');
+			  }
+			  
+			});
+
+			$("#prev").click(function() {
+			  var nextElement = $('#samples > option:selected').prev('option');
+			  if (nextElement.length > 0) {
+				$('#samples > option:selected').removeAttr('selected').prev('option').attr('selected', 'selected');
+				$('#samples').trigger('change');
+			  }
+			});
+			
+			
+			
          });
 		 /*class="collapse" data-toggle="collapse" href="#answersTab" role="button" aria-expanded="false" aria-controls="answersTab"*/
-</script>
+
+		 
+		 </script>
 <style>
-	span {
-	  --display: none!important;
-	}
+	
 	
 	#answers{display: none;}
 	
@@ -127,22 +147,68 @@
 <title>PTE Quiz</title>
 </head>
 <body>
-	<div class="alert alert-primary" role="alert">
-	  PTE | READING |  Read & Write Fill In The Blank 
-	</div>
-	<form>
-	  <div class="form-group">
-		<label for="samples">Please chose question to load ... </label>
-		<select id="samples" class="form-control"></select>
-		
+	<div class="container">
+	  <div class="row">
+		<div class="col-sm-12">
+			<span class="align-middle"><h2> PTE | READING |  Read & Write Fill In The Blank </h2></span>			
+		</div>
 	  </div>
-	</form>
-	<div id="question"> </div>
-	<a id="show_answer" class="btn btn-success" >
-		SHOW ANSWERS 
-	</a>
-	<div id="answersTab"  >
-	  <div id="answers" class="alert alert-success"></div> 
-	</div>
+	  <div class="row">
+		<div class="col-sm-12">
+			<div class="alert alert-info" role="alert">
+			  Please select or navigate to question ... 
+			</div>
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col-sm">
+		 <form>
+			 <div class="form-row">
+				<div class="col-sm-1">
+				  <button  id="prev" type="button" class="btn btn-outline-dark"><< Prev</button>
+				</div>
+				<div class="col-sm-9">	
+				 <select id="samples" class="form-control"></select>
+				</div>
+				<div class="col-sm-2">
+				  <button  id="next" type="button" class="btn btn-outline-dark">Next >></button>
+				</div>
+			  </div>	
+			</form>
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col-sm-12">
+			<br>
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col-sm-12 border border-warning">
+			<span class=" " id="question"> </span>
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col-sm-12">
+			<br>
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col-sm-12">
+			<a id="show_answer" class="btn btn-lg btn-success" > SHOW ANSWERS </a>
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col-sm-12">
+			
+		</div>
+	  </div>
+	  <div class="row">
+	  <div class="col-sm-12">
+		<div id="answersTab"  >
+		  <div id="answers" class="alert alert-success"></div> 
+		</div>
+	  </div>
+	  </div>
+	</div>	
 </body>
 </html>
