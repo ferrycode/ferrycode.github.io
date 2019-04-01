@@ -11,7 +11,10 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="https://ferrycode.github.io/PTE/js/jsdiff.js"></script>
+<script src="../../js/jsdiff.js"></script>
+<script src="../../js/diff_match_patch.js"></script>
+<script src="../../js/jquery.pretty-text-diff.min.js"></script>
+
 <script>
          $(document).ready(function() { 
 			var jsonURL = "data.json";
@@ -39,22 +42,42 @@
 					//$('.answer-hint').hide();
 					//$("#answers").html('');
 					$("#answers").hide();
-					
+					$("#diff").hide();					
 					$('#show_answer').text('SHOW ANSWERS');
 					
 				}
 				else{
 					var score = 0 ; 
 					var optionsCount = 0;
+					var script = $("#answers").text() ;				
+					var response = $("#response").val() ;
+					
+					//var diffH = Diff.diffString(script,response);
+					
+					var diffHTML = diff_lineMode(response,script);
+					
+					//var dmp = new diff_match_patch();
+					//var diff = dmp.diff_main(response,script);
+					// Result: [(-1, "Hell"), (1, "G"), (0, "o"), (1, "odbye"), (0, " World.")]
+					//dmp.diff_cleanupSemantic(diff);
+			        // Result: [(-1, "Hello"), (1, "Goodbye"), (0, " World.")]
+					
+					//var diffHTML = dmp.diff_prettyHtml(diff);
+					
+					 //alert(diffHTML);
 					$('#show_answer').text('HIDE ANSWERS');
 					//$('.answer-hint').show(); 
 				
 					 
+					$("#diff").html(diffHTML);
+					//$("#diff").text(diff);
+					
 					
 					
 					//userScoreMsg = ' Your score = '+score+ ' out of '+ optionsCount ;
 					//$("#answers").html(userScoreMsg);
 					$("#answers").show();
+					$("#diff").show();
 				}
             });
 
@@ -75,12 +98,9 @@
 					audio[0].play(); 
 				}, 5000)
 				
-				$("#diff").html(diffString(script,response));
-				
-   
-	
-				$("#answers").html(script);	//inject correct answers UL 			
-				
+					
+				$("#answers").html(script);	//inject correct answers UL 	
+				$("#diff").html("");	
 				
 				//reset timer 
 				$('#timer').timer('remove');
@@ -94,7 +114,11 @@
 				loadQuestion (questionIndex);
 				
 				//$("#answers").html('');
+				$("#response").val('');
+				
+
 				$("#answers").hide();
+				$("#diff").hide();
 			});
 
 			$("#next").click(function() {
@@ -118,24 +142,39 @@
 			
          });
 		 /*class="collapse" data-toggle="collapse" href="#answersTab" role="button" aria-expanded="false" aria-controls="answersTab"*/
-
+		
+		function diff_lineMode(text1, text2) {
+		  var dmp = new diff_match_patch();
+		  //var a = dmp.diff_linesToChars_(text1, text2);
+		  //var lineText1 = a.chars1;
+		  //var lineText2 = a.chars2;
+		  //var lineArray = a.lineArray;
+		  //var diffs = dmp.diff_main(lineText1, lineText2, false);
+		  var diffs = dmp.diff_main(text1, text2);
+		  dmp.diff_cleanupSemantic(diffs);
+		  //dmp.diff_charsToLines_(diffs, lineArray);
+		  //dmp.diff_prettyHtml(diffs);
+		  var diffHTML = dmp.diff_prettyHtml(diffs);
+		  return diffHTML;
+		}
 		 
 		 </script>
 <style>
 	
 	
 	#answers{display: none;}
+	#diff{display: none;}
 	
 	option .wrong={background-color:red!important; }
 	option .correct={background-color:green!important; }
 </style>
-<title>PTE Quiz</title>
+<title>PTE | LISTENING |  Write From Dictation </title>
 </head>
 <body>
 	<div class="container">
 	  <div class="row">
 		<div class="col-sm-12">
-			<span class="align-middle"><h2> PTE | READING |  Read Fill In The Blank </h2></span>			
+			<span class="align-middle"><h2> PTE | LISTENING |  Write From Dictation </h2></span>			
 		</div>
 	  </div>
 	  <div class="row">
@@ -163,8 +202,7 @@
 		</div>
 	  </div>
 	   <div class="row">
-		<div class="col-sm-10">
-			
+		<div class="col-sm-10">			
 		</div>
 		<div class="col-sm-2 text-center border-left border-danger">
 			<h3 class="" id="timer"><h3>
@@ -177,24 +215,19 @@
 		</div>
 	  </div>
 	  <div class="row">
-		<div class="col-sm-12 border border-warning">
-			
-			
+		<div class="col-sm-12 text-center">		
 			<audio id="audio" controls="controls">
 			  <source id="audio_src" src=""></source>
 			  Your browser does not support the audio format.
-			</audio>
-			
+			</audio>			
 		</div>
 	  </div>
 	  <div class="row">
 		<div class="col-sm-12">
 			<div class="form-group">
 			  <label for="response">Response:</label>
-			  <textarea id="response" class="form-control" rows="5" id="response"></textarea>
-			</div>
-			
-			
+			  <textarea id="response" class="form-control" rows="3" ></textarea>
+			</div>			
 		</div>
 	  </div>
 	  <div class="row">
@@ -203,14 +236,14 @@
 		</div>
 	  </div>
 	  <div class="row">
-		<div class="col-sm-12">
-			<div id="diff"></div>
+		<div class="col-sm-12">			
 		</div>
 	  </div>
 	  <div class="row">
 	  <div class="col-sm-12">
 		<div id="answersTab"  >
-		  <div id="answers" class="alert alert-success"></div> 
+		  <div id="answers" class="alert alert-success"></div>
+		  <div id="diff" class="alert alert-warning"></div>
 		</div>
 	  </div>
 	  </div>
