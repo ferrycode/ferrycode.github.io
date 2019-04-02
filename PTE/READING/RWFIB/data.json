@@ -604,13 +604,13 @@
             ],
             [
                "necessary actions",
-               0
+               1
             ]
          ],
          [
             [
                "taking risks",
-               0
+               1
             ],
             [
                "making money",
@@ -629,8 +629,7 @@
       "answers":[
          "coordinating",
          "visualizes",
-         "necessary",
-         "actions",
+         "necessary actions",
          "taking risks"
       ]
    },
@@ -1171,8 +1170,7 @@
       "answers":[
          "assumed",
          "accessible",
-         "contributions",
-         "contributions",
+         "contributions",         
          "introduced",
          "revenue"
       ]
