@@ -45,9 +45,10 @@
 					//var n = value.question.indexOf("<span");
 					//var desc = value.question.substring(0, n);
 					//desc = desc.substring(0, 100); // max 100
-					optionClass = ""; 
-					if(visited.includes(value.id)) optionClass = "visited";
-					$('#samples').append('<option value="' + index + '" class="'+optionClass+'">[' + value.id + '] </option>');
+					optionClass = "";
+					if (visited.includes(value.id)) optionClass = "visited";
+					$('#samples').append('<option value="' + index + '" class="' + optionClass + '">[' + value.id +
+						'] </option>');
 				});
 				loadQuestion(0); // initially load first question 
 			});
@@ -126,12 +127,15 @@
 				//visited 
 				item_visited(id, localStorageVariableName);
 
+				//refresh style for visited options 
+				$(".visited").css({'margin': '40px','background-color': 'rgb(225, 0, 255)', 'color': '#fff','text-shadow': '0 1px 0 rgba(0, 0, 0, 0.4)'	});
+
 			}
 			// SHOW SELECTED VALUE.
 			$('#samples').change(function () {
 				//alert(index);
 				var questionIndex = this.options[this.selectedIndex].index;
-				this.options[this.selectedIndex].className = "visited" ;
+				this.options[this.selectedIndex].className = "visited";
 				loadQuestion(questionIndex);
 
 				//$("#answers").html('');
@@ -189,7 +193,15 @@
 			return diffHTML;
 		}
 	</script>
-	<style>
+	<style type="text/css">
+		.visited {
+			margin: 40px;
+			background-color: rgb(225, 0, 255);
+			color: #fff;
+			text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+		}
+	</style>
+	<style type="text/css">
 		#answers {
 			display: none;
 		}
@@ -206,12 +218,6 @@
 			background-color: green !important;
 		}
 
-		select option .visited{
-    margin: 40px;
-    background-color: rgb(225, 0, 255);
-    color: #fff;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-}
 	</style>
 	<title>PTE | LISTENING | Write From Dictation </title>
 </head>
