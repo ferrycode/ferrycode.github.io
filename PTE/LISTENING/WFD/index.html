@@ -29,7 +29,7 @@
 			var localStorageVariableName = "visitedWFD";
 			if (localStorage.getItem(localStorageVariableName)) {
 				visited = JSON.parse(localStorage.getItem(localStorageVariableName))
-			} 
+			}
 
 			var jsonURL = "data.json";
 			var options = "";
@@ -121,7 +121,7 @@
 				$('#timer').timer();
 
 				//visited 
-				item_visited(id,localStorageVariableName);
+				item_visited(id, localStorageVariableName);
 
 			}
 			// SHOW SELECTED VALUE.
@@ -155,19 +155,20 @@
 				}
 			});
 
+			function item_visited(id, visitedQuiz) {
+				if (!visited.includes(id)) {
+					visited.push();
+					visited.sort();
+					localStorage.setItem(visitedQuiz, JSON.stringify(visited))
+					alert(JSON.stringify(visited));
+				}
+			}
 
 
 		});
 		/*class="collapse" data-toggle="collapse" href="#answersTab" role="button" aria-expanded="false" aria-controls="answersTab"*/
 
-		function item_visited(id,visitedQuiz){
-			if(!visited.includes(id)) {
-				visited.push();
-				visited.sort();
-				localStorage.setItem(visitedQuiz,JSON.stringify(visited))
-				alert(JSON.stringify(visited));
-			}	
-		}
+
 
 		function diff_lineMode(text1, text2) {
 			var dmp = new diff_match_patch();
